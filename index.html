@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おみこしハブ：低人数優先モデル</title>
+    <title>おみこしハブ：V125 安定版</title>
     <style>
         body { background-color: #050505; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         h1 { color: #ff0000; font-size: 28px; margin-bottom: 5px; text-shadow: 0 0 15px #f00; }
@@ -21,17 +21,18 @@
     <div class="version">V125: LOW-PLAYER PRIORITY</div>
 
     <div class="container">
-        <div class="label">ブロフル実自動回収<br>【低人数優先・100件検索】</div>
+        <div class="label">ブロフル実自動回収<br>【最新V125・低人数優先】</div>
         <button class="copy-btn" id="copyBtn">COPY</button>
     </div>
 
     <div class="footer">
-        人数が少ないサーバーから優先的に探します。<br>
-        「再試行」が減り、移動がスムーズになります。
+        コピーされるスクリプトをV125に修正しました。<br>
+        低人数サーバーへの爆速移動が可能です。
     </div>
 
     <script>
-        const fullScript = `-- おみこしハブ V125 (Low-Player Priority)
+        // ここが最新のV125スクリプトだぜ！
+        const fullScript = `-- おみこしハブ V125 (Final Low-Player & Sound Fix)
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
@@ -48,6 +49,10 @@ local SeaName = (PlaceId == 2753915549 and "Sea 1") or (PlaceId == 4442272183 an
 
 if CoreGui:FindFirstChild("OmikoshiHub") then CoreGui.OmikoshiHub:Destroy() end
 local sg = Instance.new("ScreenGui", CoreGui); sg.Name = "OmikoshiHub"
+
+-- フラッシュ用フレーム
+local flash = Instance.new("Frame", sg)
+flash.Size = UDim2.new(1, 0, 1, 0); flash.BackgroundColor3 = Color3.new(1, 0, 0); flash.BackgroundTransparency = 1; flash.ZIndex = 999
 
 local main = Instance.new("Frame", sg)
 main.Size = UDim2.new(0, 260, 0, 350); main.Position = UDim2.new(0.4, 0, 0.3, 0)
@@ -87,25 +92,20 @@ btnGlide.Size = UDim2.new(1, -20, 0, 65); btnGlide.Position = UDim2.new(0, 10, 0
 local btnHop = Instance.new("TextButton", content)
 btnHop.Size = UDim2.new(1, -20, 0, 75); btnHop.Position = UDim2.new(0, 10, 0, 180); btnHop.Text = "⚡ 低人数サーバーへ移動"; btnHop.BackgroundColor3 = Color3.fromRGB(180, 0, 0); btnHop.TextColor3 = Color3.new(1, 1, 1); btnHop.TextSize = 18
 
--- 低人数優先ホップ (Asc)
 btnHop.MouseButton1Click:Connect(function()
-    btnHop.Text = "空きサーバー検索中..."
-    -- sortOrderをAsc（昇順＝少ない順）に変更
+    btnHop.Text = "低人数サーバー検索中..."
     local url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
     local success, result = pcall(function() return HttpService:JSONDecode(game:HttpGet(url)) end)
-    
     if success and result.data then
         for _, s in pairs(result.data) do
-            -- 自分以外の空きサーバーを見つけたら即移動
             if s.playing < s.maxPlayers and s.id ~= game.JobId then
                 TeleportService:TeleportToPlaceInstance(PlaceId, s.id)
                 return
             end
         end
     end
-    btnHop.Text = "再試行(見つからず)"
-    task.wait(1)
-    btnHop.Text = "⚡ 低人数サーバーへ移動"
+    btnHop.Text = "再試行(空きなし)"
+    task.wait(1); btnHop.Text = "⚡ 低人数サーバーへ移動"
 end)
 
 local function GetValidFruits()
@@ -124,11 +124,19 @@ local function GetValidFruits()
     return valid, rareFound
 end
 
+-- 音とフラッシュのループ
+local lastCount = 0
 RunService.Heartbeat:Connect(function()
     if isMinimized then return end
     local f, rare = GetValidFruits()
     info.Text = "実: " .. #f .. "個" .. (rare and " [激レア!]" or "")
     if f[1] then btnGlide.Text = "滑空: " .. f[1].Name else btnGlide.Text = "実がありません" end
+    
+    if #f > lastCount and lastCount == 0 then
+        local s = Instance.new("Sound", SoundService); s.SoundId = "rbxassetid://138090596"; s.Volume = rare and 10 or 3; s:Play()
+        if rare then task.spawn(function() for i=1,5 do flash.BackgroundTransparency=0.5; task.wait(0.2); flash.BackgroundTransparency=1; task.wait(0.2) end end) end
+    end
+    lastCount = #f
 end)
 
 btnGlide.MouseButton1Click:Connect(function()
@@ -143,7 +151,7 @@ end)`;
 
         document.getElementById('copyBtn').addEventListener('click', function() {
             navigator.clipboard.writeText(fullScript).then(() => {
-                alert("おみこしハブ V125：コピー成功！\n人数が少ないサーバーから順に探すぜ！");
+                alert("おみこしハブ V125：コピー成功！\n中身もちゃんと最新になってるぜ！");
             });
         });
     </script>
