@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おみこしハブ：完全復活版</title>
+    <title>おみこしハブ：最速オーバークロック</title>
     <style>
         body { background-color: #050505; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         h1 { color: #ff0000; font-size: 28px; margin-bottom: 5px; text-shadow: 0 0 15px #f00; }
@@ -12,29 +12,21 @@
         .label { background-color: #ff0000; flex: 1.2; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; text-align: center; }
         .copy-btn { background-color: #00ff00; color: black; border: none; width: 110px; font-weight: 900; font-size: 22px; cursor: pointer; }
         .copy-btn:active { background-color: #00aa00; transform: scale(0.9); }
-        .footer { margin-top: 30px; color: #777; font-size: 11px; text-align: center; line-height: 1.5; }
     </style>
 </head>
 <body>
 
     <h1>おみこしハブ</h1>
-    <div class="version">V130: FULL RECOVERY & 4-MAN SEARCH</div>
+    <div class="version">V145: OVERCLOCK EDITION</div>
 
     <div class="container">
-        <div class="label">ブロフル実自動回収<br>【ESP距離・4人鯖狙い】</div>
+        <div class="label">ブロフル実自動回収<br>【最速オーバークロック版】</div>
         <button class="copy-btn" id="copyBtn">COPY</button>
     </div>
 
-    <div class="footer">
-        ESPの距離表示、通知音、ESP文字を復活！<br>
-        「サーバー変更」は4人前後のサーバーを狙い撃ちします。
-    </div>
-
     <script>
-        const fullScript = `-- おみこしハブ V130 (ESP Recovery & 4-Player Target)
+        const fullScript = `-- おみこしハブ V145 (Overclock Speed Edition)
 local TweenService = game:GetService("TweenService")
-local HttpService = game:GetService("HttpService")
-local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -42,9 +34,7 @@ local CoreGui = game:GetService("CoreGui")
 local Player = Players.LocalPlayer
 
 local GOD_LIST = {"LEOPARD", "DOUGH", "DRAGON", "KITSUNE", "SPIRIT", "VENOM", "T-REX"}
-local GLIDE_SPEED = 150 
-local PlaceId = game.PlaceId
-local SeaName = (PlaceId == 2753915549 and "Sea 1") or (PlaceId == 4442272183 and "Sea 2") or (PlaceId == 7449423635 and "Sea 3") or "不明"
+local GLIDE_SPEED = 350 -- ★限界突破のスピード
 
 if CoreGui:FindFirstChild("OmikoshiHub") then CoreGui.OmikoshiHub:Destroy() end
 local sg = Instance.new("ScreenGui", CoreGui); sg.Name = "OmikoshiHub"
@@ -58,7 +48,7 @@ main.BackgroundColor3 = Color3.fromRGB(15, 0, 30); main.BorderSizePixel = 3; mai
 main.ClipsDescendants = true
 
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1, -35, 0, 35); title.Text = "おみこし V130 ("..SeaName..")"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(80, 0, 0); title.Font = Enum.Font.SourceSansBold
+title.Size = UDim2.new(1, -35, 0, 35); title.Text = "おみこし V145 (OVERCLOCK)"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(80, 0, 0); title.Font = Enum.Font.SourceSansBold
 
 local minBtn = Instance.new("TextButton", main)
 minBtn.Size = UDim2.new(0, 35, 0, 35); minBtn.Position = UDim2.new(1, -35, 0, 0); minBtn.Text = "-"; minBtn.TextSize = 25; minBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0); minBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -76,15 +66,9 @@ content.Size = UDim2.new(1, 0, 1, -35); content.Position = UDim2.new(0, 0, 0, 35
 local info = Instance.new("TextLabel", content)
 info.Size = UDim2.new(1, 0, 0, 30); info.Text = "実: 0個 (監視中)"; info.TextColor3 = Color3.new(1, 1, 0); info.BackgroundTransparency = 1; info.TextSize = 18
 
--- ESP & 再検索
-local function ClearESP()
-    for _, v in pairs(CoreGui:GetChildren()) do if v.Name == "FruitESP" then v:Destroy() end end
-end
-
 local function CreateESP(part, name)
     local bg = Instance.new("BillboardGui", CoreGui); bg.Name = "FruitESP"; bg.AlwaysOnTop = true; bg.Size = UDim2.new(0, 200, 0, 50); bg.Adornee = part
     local tl = Instance.new("TextLabel", bg); tl.Size = UDim2.new(1, 0, 1, 0); tl.BackgroundTransparency = 1; tl.TextColor3 = Color3.new(1, 0.5, 0); tl.TextStrokeTransparency = 0; tl.Font = Enum.Font.SourceSansBold; tl.TextSize = 16
-    
     RunService.RenderStepped:Connect(function()
         if part and part.Parent then
             local dist = math.floor((Player.Character.HumanoidRootPart.Position - part.Position).Magnitude)
@@ -113,68 +97,53 @@ local btnESP = Instance.new("TextButton", content)
 btnESP.Size = UDim2.new(1, -20, 0, 45); btnESP.Position = UDim2.new(0, 10, 0, 40); btnESP.Text = "再検索 & ESP更新"; btnESP.BackgroundColor3 = Color3.fromRGB(0, 120, 0); btnESP.TextColor3 = Color3.new(1, 1, 1)
 
 btnESP.MouseButton1Click:Connect(function()
-    ClearESP()
+    for _, v in pairs(CoreGui:GetChildren()) do if v.Name == "FruitESP" then v:Destroy() end end
     local f = GetValidFruits()
     for _, v in pairs(f) do CreateESP(v, v.Name) end
-    btnESP.Text = "更新完了！("..#f.."個)"; task.wait(1); btnESP.Text = "再検索 & ESP更新"
 end)
 
-local btnGlide = Instance.new("TextButton", content)
-btnGlide.Size = UDim2.new(1, -20, 0, 65); btnGlide.Position = UDim2.new(0, 10, 0, 100); btnGlide.Text = "実へ滑空"; btnGlide.BackgroundColor3 = Color3.fromRGB(0, 80, 200); btnGlide.TextColor3 = Color3.new(1, 1, 1); btnGlide.TextSize = 20
+local autoCollect = false
+local btnAuto = Instance.new("TextButton", content)
+btnAuto.Size = UDim2.new(1, -20, 0, 80); btnAuto.Position = UDim2.new(0, 10, 0, 100); btnAuto.Text = "オート回収: OFF"; btnAuto.BackgroundColor3 = Color3.fromRGB(80, 80, 80); btnAuto.TextColor3 = Color3.new(1, 1, 1); btnAuto.TextSize = 22
 
-local btnHop = Instance.new("TextButton", content)
-btnHop.Size = UDim2.new(1, -20, 0, 75); btnHop.Position = UDim2.new(0, 10, 0, 180); btnHop.Text = "⚡ 4人前後のサーバーへ移動"; btnHop.BackgroundColor3 = Color3.fromRGB(180, 0, 0); btnHop.TextColor3 = Color3.new(1, 1, 1); btnHop.TextSize = 16
-
-btnHop.MouseButton1Click:Connect(function()
-    btnHop.Text = "4人サーバーを探しています..."
-    local url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
-    local success, result = pcall(function() return HttpService:JSONDecode(game:HttpGet(url)) end)
-    if success and result.data then
-        for _, s in pairs(result.data) do
-            -- ★ここがポイント：人数が2〜6人のサーバーを優先
-            if s.playing >= 2 and s.playing <= 6 and s.id ~= game.JobId then
-                TeleportService:TeleportToPlaceInstance(PlaceId, s.id)
-                return
-            end
-        end
-        -- 見つからなければ空いている所へ
-        for _, s in pairs(result.data) do
-            if s.playing < s.maxPlayers and s.id ~= game.JobId then
-                TeleportService:TeleportToPlaceInstance(PlaceId, s.id)
-                return
-            end
-        end
-    end
-    btnHop.Text = "再試行(空きなし)"; task.wait(1); btnHop.Text = "⚡ 4人前後のサーバーへ移動"
+btnAuto.MouseButton1Click:Connect(function()
+    autoCollect = not autoCollect
+    btnAuto.Text = autoCollect and "オート回収: ON" or "オート回収: OFF"
+    btnAuto.BackgroundColor3 = autoCollect and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(80, 80, 80)
 end)
+
+local isMoving = false
+local function GlideTo(target)
+    if isMoving then return end
+    isMoving = true
+    local hrp = Player.Character.HumanoidRootPart
+    local bv = Instance.new("BodyVelocity", hrp); bv.Velocity = Vector3.zero; bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+    local t = TweenService:Create(hrp, TweenInfo.new((target.Position - hrp.Position).Magnitude/GLIDE_SPEED, Enum.EasingStyle.Linear), {CFrame = target.CFrame})
+    t:Play()
+    t.Completed:Wait()
+    bv:Destroy()
+    isMoving = false
+end
 
 local lastCount = 0
 RunService.Heartbeat:Connect(function()
-    if isMinimized then return end
     local f, rare = GetValidFruits()
     info.Text = "実: " .. #f .. "個" .. (rare and " [激レア!]" or "")
-    if f[1] then btnGlide.Text = "滑空: " .. f[1].Name else btnGlide.Text = "実がありません" end
     
-    if #f > lastCount and lastCount == 0 then
+    if #f > lastCount then
         local s = Instance.new("Sound", SoundService); s.SoundId = "rbxassetid://138090596"; s.Volume = rare and 10 or 4; s:Play()
         if rare then task.spawn(function() for i=1,5 do flash.BackgroundTransparency=0.5; task.wait(0.2); flash.BackgroundTransparency=1; task.wait(0.2) end end) end
+        
+        if autoCollect and f[1] then
+            task.spawn(function() GlideTo(f[1]) end)
+        end
     end
     lastCount = #f
-end)
-
-btnGlide.MouseButton1Click:Connect(function()
-    local f = GetValidFruits()
-    if f[1] then
-        local hrp = Player.Character.HumanoidRootPart
-        local bv = Instance.new("BodyVelocity", hrp); bv.Velocity = Vector3.zero; bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-        TweenService:Create(hrp, TweenInfo.new((f[1].Position - hrp.Position).Magnitude/GLIDE_SPEED, Enum.EasingStyle.Linear), {CFrame = f[1].CFrame}):Play()
-        task.delay(3, function() bv:Destroy() end)
-    end
 end)`;
 
         document.getElementById('copyBtn').addEventListener('click', function() {
             navigator.clipboard.writeText(fullScript).then(() => {
-                alert("おみこしハブ V130：完全復活！\nESP文字・距離・音・4人鯖狙い、全部入れたぜ！");
+                alert("おみこしハブ V145：オーバークロック完了！\n移動速度と検知速度を極限まで高めたぜ！");
             });
         });
     </script>
