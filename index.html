@@ -3,78 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おみこしハブ：ゲスト専用</title>
+    <title>おみこしハブ：配布所</title>
     <style>
-        body {
-            background-color: #1a1a1a; /* ダーク背景 */
-            color: white; /* 白文字 */
-            font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+        /* 全体の背景と文字 */
+        body { 
+            background-color: #1a1a1a; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 30px 10px;
+            margin: 0;
         }
-        .container {
-            display: flex;
-            width: 350px;
-            margin-bottom: 15px;
-            height: 60px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            overflow: hidden; /* 角を丸く保つ */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* 影をつけて立体的に */
+        h1 { 
+            color: #ff0000; 
+            font-size: 28px; 
+            margin-bottom: 5px; 
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
         }
-        .label {
-            background-color: #ff0000; /* 設計図通りの赤ラベル */
-            flex: 1; /* 残りの幅を全部使う */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
+        .subtitle { 
+            font-size: 14px; 
+            color: #888; 
+            margin-bottom: 30px; 
+            letter-spacing: 3px;
         }
-        .copy-btn {
-            background-color: #00ff00; /* 設計図通りの緑ボタン */
-            color: black;
-            border: none;
-            width: 100px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
+        /* ボタンのコンテナ（枠） */
+        .container { 
+            display: flex; 
+            width: 90%; 
+            max-width: 400px; 
+            margin-bottom: 15px; 
+            height: 65px; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 2px solid #333; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
         }
-        /* ボタンを押したときの動き */
-        .copy-btn:active {
-            background-color: #00cc00; /* 少し暗く */
-            transform: scale(0.95); /* 少し小さく */
+        /* 左側の赤ラベル */
+        .label { 
+            background-color: #ff0000; 
+            flex: 1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 16px; 
+            text-align: center;
+            line-height: 1.2;
         }
-        h1 {
-            color: #ff0000;
-            text-shadow: 2px 2px 5px black;
+        /* 右側の緑COPYボタン */
+        .copy-btn { 
+            background-color: #00ff00; 
+            color: black; 
+            border: none; 
+            width: 100px; 
+            font-weight: 900; 
+            font-size: 18px; 
+            cursor: pointer; 
+            transition: 0.2s ease;
+        }
+        /* ボタンを押したときの演出 */
+        .copy-btn:active { 
+            background-color: #00cc00; 
+            transform: scale(0.9); 
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #444;
         }
     </style>
 </head>
 <body>
+
     <h1>おみこしハブ</h1>
-    <p>GUEST EDITION v1.0</p>
+    <div class="subtitle">OFFICIAL HUB v1.0</div>
 
     <div class="container">
-        <div class="label">ゲストハブ v1.0</div>
-        <button class="copy-btn" onclick="copyScript()">COPY</button>
+        <div class="label">GUEST HUB<br>v1.0</div>
+        <button class="copy-btn" onclick="copy('https://rentry.co/omikoshi-guest/raw')">COPY</button>
     </div>
 
+    <div class="container">
+        <div class="label">ブロフル<br>実自動回収</div>
+        <button class="copy-btn" onclick="copy('https://rentry.co/omikoshi-bf/raw')">COPY</button>
+    </div>
+
+    <div class="footer">© 2026 OMIKOSHI HUB</div>
+
     <script>
-        // ボタンを押したときに動くJavaScript
-        function copyScript() {
-            // コピーしたいloadstringコード（おみさんのRentryのraw URL）
-            const code = 'loadstring(game:HttpGet("https://rentry.co/omikoshi-guest/raw"))()';
+        // コピー機能のスクリプト
+        function copy(url) {
+            const loadstring = `loadstring(game:HttpGet("${url}"))()`;
             
-            // クリップボードにコピー
-            navigator.clipboard.writeText(code).then(() => {
-                // コピー成功時のポップアップ
-                alert("おみこしハブ：コピー成功！\nRobloxで実行してな！");
+            // クリップボードに書き込み
+            navigator.clipboard.writeText(loadstring).then(() => {
+                alert("おみこしハブ：コピー成功！\nRobloxの実行環境に貼り付けて実行してな！");
+            }).catch(err => {
+                alert("エラー：コピーに失敗したぜ。ブラウザの権限を確認してくれ。");
             });
         }
     </script>
 </body>
-</html
+</html>
