@@ -3,107 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おみこしハブ：配布所</title>
+    <title>おみこしハブ：ブロフル実自動回収</title>
     <style>
-        /* 全体の背景と文字 */
-        body { 
-            background-color: #1a1a1a; 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            padding: 30px 10px;
-            margin: 0;
-        }
-        h1 { 
-            color: #ff0000; 
-            font-size: 28px; 
-            margin-bottom: 5px; 
-            text-shadow: 0 0 10px rgba(255,0,0,0.5);
-        }
-        .subtitle { 
-            font-size: 14px; 
-            color: #888; 
-            margin-bottom: 30px; 
-            letter-spacing: 3px;
-        }
-        /* ボタンのコンテナ（枠） */
-        .container { 
-            display: flex; 
-            width: 90%; 
-            max-width: 400px; 
-            margin-bottom: 15px; 
-            height: 65px; 
-            border-radius: 12px; 
-            overflow: hidden; 
-            border: 2px solid #333; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-        }
-        /* 左側の赤ラベル */
-        .label { 
-            background-color: #ff0000; 
-            flex: 1; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold; 
-            font-size: 16px; 
-            text-align: center;
-            line-height: 1.2;
-        }
-        /* 右側の緑COPYボタン */
-        .copy-btn { 
-            background-color: #00ff00; 
-            color: black; 
-            border: none; 
-            width: 100px; 
-            font-weight: 900; 
-            font-size: 18px; 
-            cursor: pointer; 
-            transition: 0.2s ease;
-        }
-        /* ボタンを押したときの演出 */
-        .copy-btn:active { 
-            background-color: #00cc00; 
-            transform: scale(0.9); 
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 12px;
-            color: #444;
-        }
+        body { background-color: #0a0a0a; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        h1 { color: #ff0000; font-size: 28px; margin-bottom: 5px; text-shadow: 0 0 15px #f00; }
+        .version { font-size: 12px; color: #ffaa00; margin-bottom: 30px; letter-spacing: 2px; }
+        .container { display: flex; width: 90%; max-width: 400px; height: 80px; border-radius: 15px; overflow: hidden; border: 3px solid #444; box-shadow: 0 0 20px rgba(255,0,0,0.3); }
+        .label { background-color: #ff0000; flex: 1.2; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; text-align: center; }
+        .copy-btn { background-color: #00ff00; color: black; border: none; width: 110px; font-weight: 900; font-size: 22px; cursor: pointer; transition: 0.1s; }
+        .copy-btn:active { background-color: #00aa00; transform: scale(0.9); }
+        .footer { margin-top: 30px; color: #444; font-size: 10px; }
     </style>
 </head>
 <body>
 
     <h1>おみこしハブ</h1>
-    <div class="subtitle">OFFICIAL HUB v1.0</div>
+    <div class="version">V100: OMNI-STEALTH</div>
 
     <div class="container">
-        <div class="label">GUEST HUB<br>v1.0</div>
-        <button class="copy-btn" onclick="copy('https://rentry.co/omikoshi-guest/raw')">COPY</button>
+        <div class="label">ブロフル実自動回収<br>FULL FEATURES</div>
+        <button class="copy-btn" id="copyBtn">COPY</button>
     </div>
 
-    <div class="container">
-        <div class="label">ブロフル<br>実自動回収</div>
-        <button class="copy-btn" onclick="copy('https://rentry.co/omikoshi-bf/raw')">COPY</button>
-    </div>
-
-    <div class="footer">© 2026 OMIKOSHI HUB</div>
+    <div class="footer">COPIED SCRIPT IS 100% ORIGINAL CODE</div>
 
     <script>
-        // コピー機能のスクリプト
-        function copy(url) {
-            const loadstring = `loadstring(game:HttpGet("${url}"))()`;
-            
-            // クリップボードに書き込み
-            navigator.clipboard.writeText(loadstring).then(() => {
-                alert("おみこしハブ：コピー成功！\nRobloxの実行環境に貼り付けて実行してな！");
-            }).catch(err => {
-                alert("エラー：コピーに失敗したぜ。ブラウザの権限を確認してくれ。");
+        // おみが貼ってくれたフルコードをそのまま変数に格納
+        const fullScript = `-- おみこしハブ V100: OMNI-STEALTH (Full Features + Minimize)
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local SoundService = game:GetService("SoundService")
+local CoreGui = game:GetService("CoreGui")
+local Player = Players.LocalPlayer
+
+-- 1. ゴッドリスト & 設定
+local GOD_LIST = {"LEOPARD", "DOUGH", "DRAGON", "KITSUNE", "SPIRIT", "VENOM", "T-REX"}
+local GLIDE_SPEED = 150 
+
+-- 2. UI & エフェクト構築
+if CoreGui:FindFirstChild("OmikoshiHub") then CoreGui.OmikoshiHub:Destroy() end
+local sg = Instance.new("ScreenGui", CoreGui); sg.Name = "OmikoshiHub"
+
+-- レア実発光用フレーム
+local flash = Instance.new("Frame", sg)
+flash.Size = UDim2.new(1, 0, 1, 0); flash.BackgroundColor3 = Color3.new(1, 0, 0); flash.BackgroundTransparency = 1; flash.ZIndex = 999
+
+-- メインフレーム
+local main = Instance.new("Frame", sg)
+main.Size = UDim2.new(0, 260, 0, 320); main.Position = UDim2.new(0.4, 0, 0.3, 0)
+main.BackgroundColor3 = Color3.fromRGB(20, 0, 40); main.BorderSizePixel = 3; main.BorderColor3 = Color3.fromRGB(255, 215, 0); main.Active = true; main.Draggable = true
+main.ClipsDescendants = true -- 最小化時に中身を隠す
+
+-- タイトルバー
+local title = Instance.new("TextLabel", main)
+title.Size = UDim2.new(1, -30, 0, 30); title.Text = "おみこしハブ V100"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(60, 0, 120); title.Font = Enum.Font.SourceSansBold
+
+-- ★最小化ボタン★
+local minBtn = Instance.new("TextButton", main)
+minBtn.Size = UDim2.new(0, 30, 0, 30); minBtn.Position = UDim2.new(1, -30, 0, 0)
+minBtn.Text = "-"; minBtn.TextSize = 25; minBtn.BackgroundColor3 = Color3.fromRGB(80, 0, 0); minBtn.TextColor3 = Color3.new(1, 1, 1)
+
+local isMinimized = false
+minBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        main:TweenSize(UDim2.new(0, 260, 0, 30), "Out", "Quad", 0.3, true)
+        minBtn.Text = "+"
+    else
+        main:TweenSize(UDim2.new(0, 260, 0, 320), "Out", "Quad", 0.3, true)
+        minBtn.Text = "-"
+    end
+end)
+
+-- コンテンツ格納用
+local content = Instance.new("Frame", main)
+content.Size = UDim2.new(1, 0, 1, -30); content.Position = UDim2.new(0, 0, 0, 30); content.BackgroundTransparency = 1
+
+local info = Instance.new("TextLabel", content)
+info.Size = UDim2.new(1, 0, 0, 20); info.Text = "実: 0個 (監視中...)"; info.TextColor3 = Color3.new(1, 1, 0); info.BackgroundTransparency = 1
+
+-- 3. フィルターロジック
+local function GetValidFruits()
+    local valid = {}
+    local rareFound = false
+    for _, v in pairs(game:GetDescendants()) do
+        if v:IsA("BasePart") and v.Name:find("Fruit") then
+            local n = v.Name:upper()
+            if not (n:find("SHIP") or n:find("%.00") or n:find("FUSED") or n:find("%d")) then
+                local p = v.Parent; local owned = false
+                while p do
+                    if p:IsA("Backpack") or (p:IsA("Model") and Players:GetPlayerFromCharacter(p)) or p.Name:lower():find("cafe") then owned = true; break end
+                    p = p.Parent
+                end
+                if not owned then 
+                    table.insert(valid, v)
+                    for _, r in pairs(GOD_LIST) do if n:find(r) then rareFound = true end end
+                end
+            end
+        end
+    end
+    table.sort(valid, function(a, b) return (a.Position - Player.Character.HumanoidRootPart.Position).Magnitude < (b.Position - Player.Character.HumanoidRootPart.Position).Magnitude end)
+    return valid, rareFound
+end
+
+-- 4. ボタン類
+local btnGlide = Instance.new("TextButton", content)
+btnGlide.Size = UDim2.new(1, -20, 0, 50); btnGlide.Position = UDim2.new(0, 10, 0, 20); btnGlide.Text = "実へ滑空"; btnGlide.BackgroundColor3 = Color3.fromRGB(0, 120, 255); btnGlide.TextColor3 = Color3.new(1, 1, 1); btnGlide.Font = Enum.Font.SourceSansBold
+
+local btnESP = Instance.new("TextButton", content)
+btnESP.Size = UDim2.new(1, -20, 0, 40); btnESP.Position = UDim2.new(0, 10, 0, 80); btnESP.Text = "ESP更新"; btnESP.BackgroundColor3 = Color3.fromRGB(0, 180, 80); btnESP.TextColor3 = Color3.new(1, 1, 1)
+
+local autoHop = false
+local btnAuto = Instance.new("TextButton", content)
+btnAuto.Size = UDim2.new(1, -20, 0, 40); btnAuto.Position = UDim2.new(0, 10, 0, 130); btnAuto.Text = "オート選別: OFF"; btnAuto.BackgroundColor3 = Color3.fromRGB(80, 80, 80); btnAuto.TextColor3 = Color3.new(1, 1, 1)
+
+btnAuto.MouseButton1Click:Connect(function()
+    autoHop = not autoHop
+    btnAuto.Text = autoHop and "オート選別: ON" or "オート選別: OFF"
+    btnAuto.BackgroundColor3 = autoHop and Color3.fromRGB(200, 100, 0) or Color3.fromRGB(80, 80, 80)
+end)
+
+-- 5. 実行ループ (爆音 & レア発光)
+local lastCount = 0
+RunService.Heartbeat:Connect(function()
+    local f, rare = GetValidFruits()
+    if not isMinimized then
+        info.Text = "実: " .. #f .. "個" .. (rare and " [激レア!]" or "")
+    end
+    
+    if #f > lastCount and lastCount == 0 then
+        local s = Instance.new("Sound", SoundService); s.SoundId = "rbxassetid://138090596"; s.Volume = rare and 10 or 3; s:Play()
+        if rare then task.spawn(function() for i=1,5 do flash.BackgroundTransparency=0.5; task.wait(0.2); flash.BackgroundTransparency=1; task.wait(0.2) end end) end
+    end
+    lastCount = #f
+    if f[1] and not isMinimized then
+        btnGlide.Text = "滑空: " .. math.floor((f[1].Position - Player.Character.HumanoidRootPart.Position).Magnitude) .. "m (" .. f[1].Name .. ")"
+    end
+end)
+
+-- 滑空 & ホップ
+btnGlide.MouseButton1Click:Connect(function()
+    local f = GetValidFruits()
+    if f[1] then
+        local hrp = Player.Character.HumanoidRootPart
+        local bv = Instance.new("BodyVelocity", hrp); bv.Velocity = Vector3.zero; bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        TweenService:Create(hrp, TweenInfo.new((f[1].Position - hrp.Position).Magnitude / GLIDE_SPEED, Enum.EasingStyle.Linear), {CFrame = f[1].CFrame + Vector3.new(0, 3, 0)}):Play()
+        task.delay((f[1].Position - hrp.Position).Magnitude / GLIDE_SPEED + 0.5, function() bv:Destroy() end)
+    end
+end)
+
+task.spawn(function()
+    while task.wait(7) do
+        if autoHop and #GetValidFruits() == 0 then 
+            local servers = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)].id)
+        end
+    end
+end)`;
+
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            navigator.clipboard.writeText(fullScript).then(() => {
+                alert("おみこしハブ：最強ブロフルスクリプトをコピーしたぜ！");
             });
-        }
+        });
     </script>
 </body>
 </html>
