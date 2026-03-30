@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おみこしハブ：V145 完全版</title>
+    <title>おみこしハブ：ハンターモデル</title>
     <style>
         body { background-color: #050505; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         h1 { color: #ff0000; font-size: 28px; margin-bottom: 5px; text-shadow: 0 0 15px #f00; }
@@ -17,16 +17,15 @@
 <body>
 
     <h1>おみこしハブ</h1>
-    <div class="version">V145: OVERCLOCK FINAL</div>
+    <div class="version">V150: HUNTER & LOGS EDITION</div>
 
     <div class="container">
-        <div class="label">ブロフル実自動回収<br>【V145・最速・オート回収】</div>
+        <div class="label">ブロフル実回収ハブ<br>【ログ・爆音・最小化UI】</div>
         <button class="copy-btn" id="copyBtn">COPY</button>
     </div>
 
     <script>
-        // ★ここから下がコピーされるスクリプト本体だぜ！
-        const fullScript = `-- おみこしハブ V145 (Final Overclock Edition)
+        const fullScript = `-- おみこしハブ V150 (Hunter & Logs & UI Mini)
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -35,7 +34,7 @@ local CoreGui = game:GetService("CoreGui")
 local Player = Players.LocalPlayer
 
 local GOD_LIST = {"LEOPARD", "DOUGH", "DRAGON", "KITSUNE", "SPIRIT", "VENOM", "T-REX"}
-local GLIDE_SPEED = 350 -- おみ専用、爆速設定
+local GLIDE_SPEED = 350
 
 if CoreGui:FindFirstChild("OmikoshiHub") then CoreGui.OmikoshiHub:Destroy() end
 local sg = Instance.new("ScreenGui", CoreGui); sg.Name = "OmikoshiHub"
@@ -44,12 +43,12 @@ local flash = Instance.new("Frame", sg)
 flash.Size = UDim2.new(1, 0, 1, 0); flash.BackgroundColor3 = Color3.new(1, 0, 0); flash.BackgroundTransparency = 1; flash.ZIndex = 999
 
 local main = Instance.new("Frame", sg)
-main.Size = UDim2.new(0, 260, 0, 350); main.Position = UDim2.new(0.4, 0, 0.3, 0)
+main.Size = UDim2.new(0, 260, 0, 420); main.Position = UDim2.new(0.4, 0, 0.2, 0)
 main.BackgroundColor3 = Color3.fromRGB(15, 0, 30); main.BorderSizePixel = 3; main.BorderColor3 = Color3.fromRGB(255, 0, 0); main.Active = true; main.Draggable = true
 main.ClipsDescendants = true
 
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1, -35, 0, 35); title.Text = "おみこし V145"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(80, 0, 0); title.Font = Enum.Font.SourceSansBold
+title.Size = UDim2.new(1, -35, 0, 35); title.Text = "おみこし V150"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(80, 0, 0); title.Font = Enum.Font.SourceSansBold
 
 local minBtn = Instance.new("TextButton", main)
 minBtn.Size = UDim2.new(0, 35, 0, 35); minBtn.Position = UDim2.new(1, -35, 0, 0); minBtn.Text = "-"; minBtn.TextSize = 25; minBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0); minBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -57,7 +56,7 @@ minBtn.Size = UDim2.new(0, 35, 0, 35); minBtn.Position = UDim2.new(1, -35, 0, 0)
 local isMinimized = false
 minBtn.MouseButton1Click:Connect(function()
     isMinimized = not isMinimized
-    main:TweenSize(isMinimized and UDim2.new(0, 260, 0, 35) or UDim2.new(0, 260, 0, 350), "Out", "Quad", 0.3, true)
+    main:TweenSize(isMinimized and UDim2.new(0, 260, 0, 35) or UDim2.new(0, 260, 0, 420), "Out", "Quad", 0.3, true)
     minBtn.Text = isMinimized and "+" or "-"
 end)
 
@@ -65,8 +64,19 @@ local content = Instance.new("Frame", main)
 content.Size = UDim2.new(1, 0, 1, -35); content.Position = UDim2.new(0, 0, 0, 35); content.BackgroundTransparency = 1
 
 local info = Instance.new("TextLabel", content)
-info.Size = UDim2.new(1, 0, 0, 30); info.Text = "実: 0個 (監視中)"; info.TextColor3 = Color3.new(1, 1, 0); info.BackgroundTransparency = 1; info.TextSize = 18
+info.Size = UDim2.new(1, 0, 0, 25); info.Text = "実: 0個 (監視中)"; info.TextColor3 = Color3.new(1, 1, 0); info.BackgroundTransparency = 1; info.TextSize = 16
 
+-- ログ表示エリア
+local logBox = Instance.new("ScrollingFrame", content)
+logBox.Size = UDim2.new(1, -20, 0, 80); logBox.Position = UDim2.new(0, 10, 0, 30); logBox.BackgroundColor3 = Color3.new(0,0,0); logBox.BackgroundTransparency = 0.5; logBox.CanvasSize = UDim2.new(0,0,5,0)
+local logList = Instance.new("UIListLayout", logBox)
+
+local function AddLog(msg, color)
+    local l = Instance.new("TextLabel", logBox); l.Size = UDim2.new(1, 0, 0, 15); l.Text = msg; l.TextColor3 = color or Color3.new(1,1,1); l.BackgroundTransparency = 1; l.TextSize = 12; l.TextXAlignment = "Left"
+end
+
+-- ESP
+local function ClearESP() for _, v in pairs(CoreGui:GetChildren()) do if v.Name == "FruitESP" then v:Destroy() end end end
 local function CreateESP(part, name)
     local bg = Instance.new("BillboardGui", CoreGui); bg.Name = "FruitESP"; bg.AlwaysOnTop = true; bg.Size = UDim2.new(0, 200, 0, 50); bg.Adornee = part
     local tl = Instance.new("TextLabel", bg); tl.Size = UDim2.new(1, 0, 1, 0); tl.BackgroundTransparency = 1; tl.TextColor3 = Color3.new(1, 0.5, 0); tl.TextStrokeTransparency = 0; tl.Font = Enum.Font.SourceSansBold; tl.TextSize = 16
@@ -95,48 +105,49 @@ local function GetValidFruits()
 end
 
 local btnESP = Instance.new("TextButton", content)
-btnESP.Size = UDim2.new(1, -20, 0, 45); btnESP.Position = UDim2.new(0, 10, 0, 40); btnESP.Text = "再検索 & ESP更新"; btnESP.BackgroundColor3 = Color3.fromRGB(0, 120, 0); btnESP.TextColor3 = Color3.new(1, 1, 1)
+btnESP.Size = UDim2.new(1, -20, 0, 40); btnESP.Position = UDim2.new(0, 10, 0, 120); btnESP.Text = "再検索 & ESP更新"; btnESP.BackgroundColor3 = Color3.fromRGB(0, 120, 0); btnESP.TextColor3 = Color3.new(1, 1, 1)
 
 btnESP.MouseButton1Click:Connect(function()
-    for _, v in pairs(CoreGui:GetChildren()) do if v.Name == "FruitESP" then v:Destroy() end end
+    ClearESP()
     local f = GetValidFruits()
-    for _, v in pairs(f) do CreateESP(v, v.Name) end
+    for _, v in pairs(f) do CreateESP(v, v.Name) AddLog("発見: "..v.Name, Color3.new(0,1,0)) end
 end)
 
-local autoCollect = false
-local btnAuto = Instance.new("TextButton", content)
-btnAuto.Size = UDim2.new(1, -20, 0, 80); btnAuto.Position = UDim2.new(0, 10, 0, 100); btnAuto.Text = "オート回収: OFF"; btnAuto.BackgroundColor3 = Color3.fromRGB(80, 80, 80); btnAuto.TextColor3 = Color3.new(1, 1, 1); btnAuto.TextSize = 22
+local btnGlide = Instance.new("TextButton", content)
+btnGlide.Size = UDim2.new(1, -20, 0, 60); btnGlide.Position = UDim2.new(0, 10, 0, 170); btnGlide.Text = "実へ滑空 (手動)"; btnGlide.BackgroundColor3 = Color3.fromRGB(0, 80, 200); btnGlide.TextColor3 = Color3.new(1, 1, 1); btnGlide.TextSize = 20
 
-btnAuto.MouseButton1Click:Connect(function()
-    autoCollect = not autoCollect
-    btnAuto.Text = autoCollect and "オート回収: ON" or "オート回収: OFF"
-    btnAuto.BackgroundColor3 = autoCollect and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(80, 80, 80)
+btnGlide.MouseButton1Click:Connect(function()
+    local f = GetValidFruits()
+    if f[1] then
+        local hrp = Player.Character.HumanoidRootPart
+        local bv = Instance.new("BodyVelocity", hrp); bv.Velocity = Vector3.zero; bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        local dist = (f[1].Position - hrp.Position).Magnitude
+        AddLog("回収開始: "..f[1].Name, Color3.new(0,0.8,1))
+        local t = TweenService:Create(hrp, TweenInfo.new(dist/GLIDE_SPEED, Enum.EasingStyle.Linear), {CFrame = f[1].CFrame})
+        t:Play()
+        t.Completed:Wait()
+        bv:Destroy()
+        AddLog("拾った: "..f[1].Name, Color3.new(1,1,0))
+    end
 end)
-
-local isMoving = false
-local function GlideTo(target)
-    if isMoving then return end
-    isMoving = true
-    local hrp = Player.Character.HumanoidRootPart
-    local bv = Instance.new("BodyVelocity", hrp); bv.Velocity = Vector3.zero; bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-    local t = TweenService:Create(hrp, TweenInfo.new((target.Position - hrp.Position).Magnitude/GLIDE_SPEED, Enum.EasingStyle.Linear), {CFrame = target.CFrame})
-    t:Play()
-    t.Completed:Wait()
-    bv:Destroy()
-    isMoving = false
-end
 
 local lastCount = 0
 RunService.Heartbeat:Connect(function()
     local f, rare = GetValidFruits()
-    info.Text = "実: " .. #f .. "個" .. (rare and " [激レア!]" or "")
+    info.Text = "サーバー内の実: " .. #f .. "個"
     
     if #f > lastCount then
-        local s = Instance.new("Sound", SoundService); s.SoundId = "rbxassetid://138090596"; s.Volume = rare and 10 or 4; s:Play()
-        if rare then task.spawn(function() for i=1,5 do flash.BackgroundTransparency=0.5; task.wait(0.2); flash.BackgroundTransparency=1; task.wait(0.2) end end) end
-        
-        if autoCollect and f[1] then
-            task.spawn(function() GlideTo(f[1]) end)
+        local s = Instance.new("Sound", SoundService); s.SoundId = "rbxassetid://138090596"; s.Volume = 4; s:Play()
+        if rare then 
+            task.spawn(function() 
+                for i=1,5 do 
+                    local r = Instance.new("Sound", SoundService); r.SoundId = "rbxassetid://138090596"; r.Volume = 10; r:Play()
+                    flash.BackgroundTransparency=0.5; task.wait(0.2); flash.BackgroundTransparency=1; task.wait(0.2) 
+                end 
+            end)
+            AddLog("⚠️激レア検知!!", Color3.new(1,0,0))
+        else
+            AddLog("ブザー: 新しい実が出現", Color3.new(1,0.5,0))
         end
     end
     lastCount = #f
@@ -144,7 +155,7 @@ end)`;
 
         document.getElementById('copyBtn').addEventListener('click', function() {
             navigator.clipboard.writeText(fullScript).then(() => {
-                alert("【おみこしハブ V145】コピー成功！\n中身を最新に書き換えたぜ。GitHubに保存してな！");
+                alert("おみこしハブ V150：コピー成功！\nログ・爆音・距離表示、全部入れたぜ！");
             });
         });
     </script>
