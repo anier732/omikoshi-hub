@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おみこしハブ：ゲスト専用</title>
+    <style>
+        body {
+            background-color: #1a1a1a; /* ダーク背景 */
+            color: white; /* 白文字 */
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            width: 350px;
+            margin-bottom: 15px;
+            height: 60px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden; /* 角を丸く保つ */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* 影をつけて立体的に */
+        }
+        .label {
+            background-color: #ff0000; /* 設計図通りの赤ラベル */
+            flex: 1; /* 残りの幅を全部使う */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .copy-btn {
+            background-color: #00ff00; /* 設計図通りの緑ボタン */
+            color: black;
+            border: none;
+            width: 100px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        /* ボタンを押したときの動き */
+        .copy-btn:active {
+            background-color: #00cc00; /* 少し暗く */
+            transform: scale(0.95); /* 少し小さく */
+        }
+        h1 {
+            color: #ff0000;
+            text-shadow: 2px 2px 5px black;
+        }
+    </style>
+</head>
+<body>
+    <h1>おみこしハブ</h1>
+    <p>GUEST EDITION v1.0</p>
+
+    <div class="container">
+        <div class="label">ゲストハブ v1.0</div>
+        <button class="copy-btn" onclick="copyScript()">COPY</button>
+    </div>
+
+    <script>
+        // ボタンを押したときに動くJavaScript
+        function copyScript() {
+            // コピーしたいloadstringコード（おみさんのRentryのraw URL）
+            const code = 'loadstring(game:HttpGet("https://rentry.co/omikoshi-guest/raw"))()';
+            
+            // クリップボードにコピー
+            navigator.clipboard.writeText(code).then(() => {
+                // コピー成功時のポップアップ
+                alert("おみこしハブ：コピー成功！\nRobloxで実行してな！");
+            });
+        }
+    </script>
+</body>
+</html>
