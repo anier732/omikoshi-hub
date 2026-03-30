@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>おみこしハブ：最速オーバークロック</title>
+    <title>おみこしハブ：V145 完全版</title>
     <style>
         body { background-color: #050505; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
         h1 { color: #ff0000; font-size: 28px; margin-bottom: 5px; text-shadow: 0 0 15px #f00; }
         .version { font-size: 12px; color: #ffaa00; margin-bottom: 25px; letter-spacing: 2px; }
         .container { display: flex; width: 90%; max-width: 400px; height: 90px; border-radius: 15px; overflow: hidden; border: 3px solid #ff0000; box-shadow: 0 0 25px rgba(255,0,0,0.4); }
-        .label { background-color: #ff0000; flex: 1.2; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; text-align: center; }
+        .label { background-color: #ff0000; flex: 1.2; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; text-align: center; }
         .copy-btn { background-color: #00ff00; color: black; border: none; width: 110px; font-weight: 900; font-size: 22px; cursor: pointer; }
         .copy-btn:active { background-color: #00aa00; transform: scale(0.9); }
     </style>
@@ -17,15 +17,16 @@
 <body>
 
     <h1>おみこしハブ</h1>
-    <div class="version">V145: OVERCLOCK EDITION</div>
+    <div class="version">V145: OVERCLOCK FINAL</div>
 
     <div class="container">
-        <div class="label">ブロフル実自動回収<br>【最速オーバークロック版】</div>
+        <div class="label">ブロフル実自動回収<br>【V145・最速・オート回収】</div>
         <button class="copy-btn" id="copyBtn">COPY</button>
     </div>
 
     <script>
-        const fullScript = `-- おみこしハブ V145 (Overclock Speed Edition)
+        // ★ここから下がコピーされるスクリプト本体だぜ！
+        const fullScript = `-- おみこしハブ V145 (Final Overclock Edition)
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -34,7 +35,7 @@ local CoreGui = game:GetService("CoreGui")
 local Player = Players.LocalPlayer
 
 local GOD_LIST = {"LEOPARD", "DOUGH", "DRAGON", "KITSUNE", "SPIRIT", "VENOM", "T-REX"}
-local GLIDE_SPEED = 350 -- ★限界突破のスピード
+local GLIDE_SPEED = 350 -- おみ専用、爆速設定
 
 if CoreGui:FindFirstChild("OmikoshiHub") then CoreGui.OmikoshiHub:Destroy() end
 local sg = Instance.new("ScreenGui", CoreGui); sg.Name = "OmikoshiHub"
@@ -48,7 +49,7 @@ main.BackgroundColor3 = Color3.fromRGB(15, 0, 30); main.BorderSizePixel = 3; mai
 main.ClipsDescendants = true
 
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1, -35, 0, 35); title.Text = "おみこし V145 (OVERCLOCK)"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(80, 0, 0); title.Font = Enum.Font.SourceSansBold
+title.Size = UDim2.new(1, -35, 0, 35); title.Text = "おみこし V145"; title.TextColor3 = Color3.new(1, 1, 1); title.BackgroundColor3 = Color3.fromRGB(80, 0, 0); title.Font = Enum.Font.SourceSansBold
 
 local minBtn = Instance.new("TextButton", main)
 minBtn.Size = UDim2.new(0, 35, 0, 35); minBtn.Position = UDim2.new(1, -35, 0, 0); minBtn.Text = "-"; minBtn.TextSize = 25; minBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 0); minBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -143,7 +144,7 @@ end)`;
 
         document.getElementById('copyBtn').addEventListener('click', function() {
             navigator.clipboard.writeText(fullScript).then(() => {
-                alert("おみこしハブ V145：オーバークロック完了！\n移動速度と検知速度を極限まで高めたぜ！");
+                alert("【おみこしハブ V145】コピー成功！\n中身を最新に書き換えたぜ。GitHubに保存してな！");
             });
         });
     </script>
